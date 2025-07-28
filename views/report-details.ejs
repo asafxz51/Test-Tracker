@@ -33,7 +33,9 @@
    <p><b>Expected Result: </b><%= report.expected %></p>
    <p><b>Actual Result: </b><%= report.actual %></p>
 </div>
-   <p><%= report.description %></p>
+<div class="report-description-box">
+<p class="preserve-lines"><%= report.description %></p>
+  </div>
    <div class="report-actions">
     <a href="/edit/<%= report._id %>" class="button">Edit Report</a>
    

@@ -18,13 +18,21 @@ router.get('/', isAuthenticated, async (req, res) => {
   const status = req.query.status || '';
   const priority = req.query.priority || '';
   const type = req.query.type || '';
+  const search = req.query.search || '';
 
   if (status) query.status = status;
   if (priority) query.priority = priority;
   if (type) query.type = type;
 
+  if (search) {
+   query.$or = [
+    { title: { $regex: search, $options: 'i' } },
+    { description: { $regex: search, $options: 'i' } }
+   ];
+  }
+
   const reports = await Report.find(query).sort({ creationDate: -1 });
-  res.render('dashboard', { reports, status, priority, type });
+  res.render('dashboard', { reports, status, priority, type, search });
  } catch (err) {
   console.error(err);
   res.status(500).send(err);
