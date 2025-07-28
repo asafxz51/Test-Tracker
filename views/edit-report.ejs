@@ -1,0 +1,47 @@
+<% layout('layouts/boilerplate') %>
+
+ <div class="form-container">
+  <h1>Edit Test Report</h1>
+  <form action="/edit/<%= report._id %>" method="POST">
+  <label for="title" style="margin-bottom: 3px;"><b>Title:</b></label>
+  <input type="text" name="title" value="<%= report.title %>" required placeholder="Title">
+  <label for="preconditions" style="margin-bottom: 3px;"><b>Preconditions:</b></label>
+  <input type="text" name="preconditions" value="<%= report.preconditions %>" required placeholder="Preconditions">
+  <label for="expected" style="margin-bottom: 3px;"><b>Expected Result:</b></label>
+  <input type="text" name="expected" value="<%= report.expected %>" required placeholder="Expected Result">
+   <label for="actual" style="margin-bottom: 3px;"><b>Actual Result:</b></label>
+   <input type="text" name="actual" value="<%= report.actual %>" required placeholder="Actual Result">
+  <label for="description" style="margin-bottom: 3px;"><b>Description:</b></label>
+   <textarea name="description" placeholder="Describe the test details..." required><%= report.description %></textarea>
+   <label for="type" style="margin-bottom: 3px;"><b>Test Type:</b></label>
+   <select name="type">
+    <option value="Functional" <%=report.type==='Functional' ? 'selected' : '' %>>Functional</option>
+    <option value="Regression" <%=report.type==='Regression' ? 'selected' : '' %>>Regression</option>
+    <option value="Smoke" <%=report.type==='Smoke' ? 'selected' : '' %>>Smoke</option>
+    <option value="UI" <%=report.type==='UI' ? 'selected' : '' %>>UI</option>
+    <option value="API" <%=report.type==='API' ? 'selected' : '' %>>API</option>
+   </select>
+
+  <label for="status" style="margin-bottom: 3px;"><b>Test Status:</b></label>
+ <select name="status">
+  <option value="Not Executed" <%=report.status==='Not Executed' ? 'selected' : '' %>>Not Executed</option>
+  <option value="In Progress" <%=report.status==='In Progress' ? 'selected' : '' %>>In Progress</option>
+  <option value="Passed" <%=report.status==='Passed' ? 'selected' : '' %>>Passed</option>
+  <option value="Failed" <%=report.status==='Failed' ? 'selected' : '' %>>Failed</option>
+  <option value="Blocked" <%=report.status==='Blocked' ? 'selected' : '' %>>Blocked</option>
+  <option value="Skipped" <%=report.status==='Skipped' ? 'selected' : '' %>>Skipped</option>
+  <option value="Retest" <%=report.status==='Retest' ? 'selected' : '' %>>Retest</option>
+ </select>
+
+    <label for="priority" style="margin-bottom: 3px;"><b>Priority:</b></label>
+   <select name="priority">
+    <option value="Low" <%=report.priority==='Low' ? 'selected' : '' %>>Low</option>
+    <option value="Medium" <%=report.priority==='Medium' ? 'selected' : '' %>>Medium</option>
+    <option value="High" <%=report.priority==='High' ? 'selected' : '' %>>High</option>
+   </select>
+   <button type="submit">Update Report</button>
+  </form>
+  <div class="actions">
+   <a href="/">Cancel</a>
+  </div>
+ </div>

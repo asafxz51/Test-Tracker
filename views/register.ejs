@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <title>Register - Test Tracker</title>
+ <link rel="stylesheet" href="/css/styles.css">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <style>
+  .error-message {
+   color: var(--danger-color);
+   background-color: #f8d7da;
+   border: 1px solid #f5c6cb;
+   padding: 10px;
+   border-radius: 5px;
+   margin-bottom: 15px;
+   text-align: center;
+  }
+ </style>
+</head>
+
+<body>
+ <div class="login-container">
+  <h1>Create an Account</h1>
+
+  <!-- Display error message if it exists -->
+  <% if (locals.error) { %>
+   <div class="error-message">
+    <%= error %>
+   </div>
+   <% } %>
+
+    <form action="/register" method="POST">
+     <input type="text" name="username" placeholder="Username" required>
+     <input type="password" name="password" placeholder="Password" required>
+     <button type="submit">Register</button>
+    </form>
+    <div style="margin-top: 20px;">
+     <p>Already have an account? <a href="/login">Login here</a></p>
+    </div>
+ </div>
+
+
+</body>
+
+</html>

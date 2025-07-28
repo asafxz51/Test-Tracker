@@ -1,0 +1,45 @@
+<% layout('layouts/boilerplate') %>
+
+ <div class="form-container">
+  <h1>Add New Test Report</h1>
+  <form action="/add" method="POST">
+   <label for="title" style="margin-bottom: 3px;"><b>Title:</b></label>
+   <input type="text" name="title" placeholder="Title" required maxlength="17">
+   <label for="preconditions" style="margin-bottom: 3px;"><b>Preconditions:</b></label>
+   <input type="text" name="preconditions" placeholder="Preconditions" required>
+    <label for="expected" style="margin-bottom: 3px;"><b>Expected Result:</b></label>
+   <input type="text" name="expected" placeholder="Expected Result" required>
+       <label for="actual" style="margin-bottom: 3px;"><b>Actual Result:</b></label>
+   <input type="text" name="actual" placeholder="Actual Result" required>
+       <label for="description" style="margin-bottom: 3px;"><b>Description:</b></label>
+   <textarea name="description" placeholder="Describe the test details..." required></textarea>
+   <label for="type" style="margin-bottom: 3px;"><b>Test Type:</b></label>
+   <select name="type">
+    <option value="Functional">Functional</option>
+    <option value="Regression">Regression</option>
+    <option value="Smoke">Smoke</option>
+    <option value="UI">UI</option>
+    <option value="API">API</option>
+   </select>
+   <label for="status" style="margin-bottom: 3px;"><b>Test Status:</b></label>
+   <select name="status">
+    <option value="Not Executed">Not Executed</option>
+    <option value="In Progress">In Progress</option>
+    <option value="Passed">Passed</option>
+    <option value="Failed">Failed</option>
+    <option value="Blocked">Blocked</option>
+    <option value="Skipped">Skipped</option>
+    <option value="Retest">Retest</option>
+   </select>
+    <label for="priority" style="margin-bottom: 3px;"><b>Priority:</b></label>
+   <select name="priority">
+    <option value="Low">Low</option>
+    <option value="Medium">Medium</option>
+    <option value="High">High</option>
+   </select>
+   <button type="submit">Add Report</button>
+  </form>
+  <div class="actions">
+   <a href="/">Cancel</a>
+  </div>
+ </div>
