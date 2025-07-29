@@ -14,7 +14,7 @@
     "dotenv": "^17.2.1",
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
-    "express": "^5.1.0",
+    "express": "^4.21.2",
     "express-session": "^1.18.2",
     "mongoose": "^8.16.5",
     "serverless-http": "^3.2.0"
