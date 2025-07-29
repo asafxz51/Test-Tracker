@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 
 const express = require('express');
@@ -7,14 +6,14 @@ const session = require('express-session');
 const path = require('path');
 const ejsMate = require('ejs-mate');
 
-// Import your routes
+// ייבוא קבצי ה-routes
 const authRoutes = require('./routes/auth');
 const reportRoutes = require('./routes/reports');
 
-// Initialize the app
+// אתחול האפליקציה
 const app = express();
 
-// --- Database Connection ---
+// --- חיבור לבסיס הנתונים ---
 mongoose.connect(process.env.MONGODB_URI, {
  useNewUrlParser: true,
  useUnifiedTopology: true
@@ -22,20 +21,25 @@ mongoose.connect(process.env.MONGODB_URI, {
  .catch(err => console.error('MongoDB connection error:', err));
 
 
-// --- Core Middlewares ---
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// --- הגדרת Middlewares (החלק הקריטי) ---
 
+// שתי השורות הבאות הן התחליף המודרני ל-body-parser.
+// הן חייבות להופיע כאן כדי לקרוא מידע מטפסים.
+app.use(express.json()); // לקריאת מידע בפורמט JSON
+app.use(express.urlencoded({ extended: true })); // לקריאת מידע מטפסי HTML
+
+// הגדרת התיקייה הציבורית (לקבצי CSS, תמונות וכו')
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// --- View Engine Setup ---
+// --- הגדרת מנוע התבניות (View Engine) ---
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 
-// --- Session Setup ---
+// --- הגדרת סשן (Session) ---
+// חייב להופיע אחרי ה-middlewares של קריאת המידע ולפני ה-routes
 app.use(session({
  secret: process.env.SESSION_SECRET,
  resave: false,
@@ -43,10 +47,10 @@ app.use(session({
 }));
 
 
-// --- Routes ---
+// --- הגדרת ה-Routes ---
 app.use('/', authRoutes);
 app.use('/', reportRoutes);
 
 
-// --- Export for Netlify ---
+// --- ייצוא האפליקציה עבור Netlify ---
 module.exports = app;
