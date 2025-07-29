@@ -1,41 +1,43 @@
+// This line should be at the very top to load your environment variables
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
-const ejsMate = require('ejs-mate')
+const ejsMate = require('ejs-mate');
 
 const authRoutes = require('./routes/auth');
 const reportRoutes = require('./routes/reports');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/bugtracker', {
+//database
+mongoose.connect(process.env.MONGODB_URI, {
  useNewUrlParser: true,
  useUnifiedTopology: true
 }).then(() => console.log('MongoDB connected'))
  .catch(err => console.log(err));
 
-// Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
+
+ //middlewares
+app.use(express.urlencoded({ extended: true }));
+
 app.use(express.static(path.join(__dirname, 'public')));
-app.engine('ejs', ejsMate)
+
+app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
+
+app.set('views', path.join(__dirname, 'views'));
+
 app.use(session({
- secret: 'secret-key',
+ secret: process.env.SESSION_SECRET,
  resave: false,
  saveUninitialized: true
 }));
 
-// Routes
+//routes
 app.use('/', authRoutes);
 app.use('/', reportRoutes);
-
-// Start Server
-// app.listen(PORT, () => {
-//  console.log(`Server is running on http://localhost:${PORT}`);
-// });
 
 module.exports = app;
