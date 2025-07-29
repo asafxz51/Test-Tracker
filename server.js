@@ -2,7 +2,6 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
-const MongoStore = require('connect-mongo');
 const session = require('express-session');
 const path = require('path');
 const ejsMate = require('ejs-mate');
@@ -42,9 +41,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(session({
  secret: process.env.SESSION_SECRET,
  resave: false,
- saveUninitialized: false,
- store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
- cookie: { secure: false }
+ saveUninitialized: true
 }));
 
 
