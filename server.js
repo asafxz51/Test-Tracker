@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
 const session = require('express-session');
 const path = require('path');
 const ejsMate = require('ejs-mate');
@@ -23,9 +24,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // --- הגדרת Middlewares (החלק הקריטי) ---
 
-// שתי השורות הבאות הן התחליף המודרני ל-body-parser.
-// הן חייבות להופיע כאן כדי לקרוא מידע מטפסים.
-app.use(express.json()); // לקריאת מידע בפורמט JSON
+app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); // לקריאת מידע מטפסי HTML
 
 // הגדרת התיקייה הציבורית (לקבצי CSS, תמונות וכו')
@@ -43,7 +42,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(session({
  secret: process.env.SESSION_SECRET,
  resave: false,
- saveUninitialized: true
+ saveUninitialized: false,
+ store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
+ cookie: { secure: false }
 }));
 
 
