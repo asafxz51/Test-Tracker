@@ -1,9 +1,16 @@
 [build]
   command = "npm install"
-  functions = "functions/"      
-
-[dev]
   functions = "functions/"
+  # The "publish" directory is where your static assets are.
+  # This helps Netlify find your public folder correctly.
+  publish = "public/"
+
+# This section is NEW and CRITICAL
+# It specifies rules for the function named "api" (from functions/api.js)
+[functions."api"]
+  # This tells Netlify to package the entire 'views' and 'routes' directory 
+  # along with the function, so it can be found at runtime.
+  included_files = ["views/**", "routes/**"]
 
 [[redirects]]
   from = "/*"
