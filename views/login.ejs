@@ -32,20 +32,19 @@
  <div class="login-container">
   <h1>Test Tracker Login</h1>
 
-  <!-- Display error message if it exists -->
-  <% if (locals.error) { %>
-   <div class="message error-message">
-    <%= error %>
-   </div>
-   <% } %>
-
-    <!-- Display success message if it exists -->
-    <% if (locals.success) { %>
-     <div class="message success-message">
-      <%= success %>
+<% if (locals.error_msg && error_msg.length> 0) { %>
+     <div class="message error-message">
+          <%= error_msg %>
      </div>
      <% } %>
+          <% if (locals.success_msg && success_msg.length> 0) { %>
+               <div class="message success-message">
+                    <%= success_msg %>
+               </div>
+               <% } %>
 
+     
+                   
       <form action="/login" method="POST">
        <input type="text" name="username" placeholder="Username" required>
        <input type="password" name="password" placeholder="Password" required>

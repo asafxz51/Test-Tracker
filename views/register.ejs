@@ -30,6 +30,17 @@
    </div>
    <% } %>
 
+      <% if (locals.error_msg && error_msg.length> 0) { %>
+         <div class="alert alert-danger">
+            <%= error_msg %>
+         </div>
+         <% } %>
+            <% if (locals.success_msg && success_msg.length> 0) { %>
+               <div class="alert alert-success">
+                  <%= success_msg %>
+               </div>
+               <% } %>
+   
     <form action="/register" method="POST">
      <input type="text" name="username" placeholder="Username" required>
      <input type="password" name="password" placeholder="Password" required>

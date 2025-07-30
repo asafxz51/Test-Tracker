@@ -193,6 +193,10 @@ button[type="submit"]:hover,
     justify-content: center;
     flex-direction: column;
   }
+
+  .select-filters select{
+    font-size: 0.7rem;
+  }
 }
 
 .filter-form {
@@ -472,6 +476,14 @@ button[type="submit"]:hover,
  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
 }
 
+@media (max-width: 760px) {
+  .empty-state {
+    box-shadow: none;
+  }
+}
+
+
+
 .empty-content {
  text-align: center;
  max-width: 400px;
@@ -611,4 +623,21 @@ button[type="submit"]:hover,
 .search-input::-webkit-search-cancel-button {
   -webkit-appearance: none;
   appearance: none;
+}
+
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #fff;
+  text-align: center;
+}
+
+.alert-danger {
+  background-color: #dc3545;
+}
+
+.alert-success {
+  background-color: #28a745;
 }
