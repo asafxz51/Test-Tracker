@@ -32,14 +32,15 @@
  <div class="login-container">
   <h1>Test Tracker Login</h1>
 
-<% if (locals.error_msg && error_msg.length> 0) { %>
+<% if (error_msg && error_msg.length> 0) { %>
      <div class="message error-message">
-          <%= error_msg %>
+          <%= error_msg[0] %>
      </div>
      <% } %>
-          <% if (locals.success_msg && success_msg.length> 0) { %>
+
+          <% if (success_msg && success_msg.length> 0) { %>
                <div class="message success-message">
-                    <%= success_msg %>
+                    <%= success_msg[0] %>
                </div>
                <% } %>
 

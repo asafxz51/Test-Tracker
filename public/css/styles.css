@@ -265,8 +265,8 @@ button[type="submit"]:hover,
 .report-card-body {
  padding-top: 0;
  flex-grow: 1;
-   white-space: normal;   /* מאפשר ירידת שורה רגילה */
-  word-wrap: break-word; /* שובר מילים ארוכות במידת הצורך */
+   white-space: normal;   
+  word-wrap: break-word; 
   overflow-wrap: break-word;
 }
 
@@ -314,7 +314,6 @@ button[type="submit"]:hover,
  align-items: center;
  border-top: 1px solid var(--border-color);
  margin-top: auto;
- /* Push footer to the bottom */
  padding-top: 15px;
 }
 

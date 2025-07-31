@@ -10,7 +10,6 @@ const isAuthenticated = (req, res, next) => {
  res.redirect('/login');
 };
 
-// Dashboard - Display reports for the logged-in user only
 router.get('/', isAuthenticated, async (req, res) => {
  try {
   const query = { author: req.session.userId };
