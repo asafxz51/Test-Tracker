@@ -7,14 +7,10 @@
    <link rel="stylesheet" href="/css/styles.css"> <!-- Your main stylesheet -->
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <style>
-      /*
-            STYLES TO MATCH YOUR SCREENSHOT
-            These are identical to the 'add-report.ejs' styles.
-        */
+ 
       body {
          background-color: #f4f7f9;
          font-family: Arial, sans-serif;
-         color: #333;
       }
 
       .form-container {
@@ -27,40 +23,38 @@
       }
 
       .form-container h1 {
-         text-align: left;
          margin-bottom: 30px;
          font-size: 24px;
       }
 
-      .form-grid {
-         display: grid;
-         grid-template-columns: 150px 1fr;
-         gap: 20px;
-         align-items: center;
+      .form-group {
+         margin-bottom: 20px;
       }
 
-      .form-grid label {
-         font-weight: bold;
-         text-align: left;
-      }
-
-      .form-group.full-width {
-         grid-column: 1 / -1;
-      }
-
-      .form-group.full-width label {
-         margin-bottom: 8px;
+      .form-group label {
          display: block;
+         font-weight: bold;
+         margin-bottom: 8px;
       }
 
-      .form-group.full-width textarea,
-      .form-group.full-width #steps-container {
+      .form-group input[type="text"],
+      .form-group select,
+      .form-group textarea {
          width: 100%;
+         padding: 10px;
+         border: 1px solid #ccc;
+         border-radius: 4px;
       }
 
-      #add-step-btn {
-         grid-column: 2 / 3;
-         justify-self: start;
+      .form-row {
+         display: flex;
+         gap: 20px;
+         align-items: flex-start;
+      }
+
+      .form-row .form-group {
+         flex-grow: 1;
+         width: 100%;
       }
 
       .step-input-group {
@@ -94,10 +88,8 @@
          text-align: center;
       }
 
-      .button,
-      button[type="submit"] {
-         background-color: #007bff;
-         border-radius: 5px;
+      .form-actions {
+         margin-top: 30px;
       }
    </style>
 </head>
@@ -106,54 +98,60 @@
    <div class="form-container">
       <h1>Edit Test Case</h1>
 
-      <form action="/edit/<%= report._id %>" method="POST" class="form-grid">
+      <form action="/edit/<%= report._id %>" method="POST">
 
-         <!-- Title -->
-         <label for="title">Title</label>
-         <input type="text" id="title" name="title" value="<%= report.title %>" required>
-
-         <!-- Description (Full Width) -->
-         <div class="form-group full-width">
-            <label for="description">Description</label>
-            <textarea id="description" name="description" rows="4"><%= report.description %></textarea>
+         <!-- Row 1: Title and Description -->
+         <div class="form-row">
+            <div class="form-group" style="width: 40%;">
+               <label for="title">Title</label>
+               <input type="text" id="title" name="title" value="<%= report.title %>" required>
+            </div>
+            <div class="form-group">
+               <label for="description">Description</label>
+               <textarea id="description" name="description" rows="4"><%= report.description %></textarea>
+            </div>
          </div>
 
-         <!-- Type -->
-         <label for="type">Type</label>
-         <select id="type" name="type">
-            <option <%=report.type==='Functional' ? 'selected' : '' %>>Functional</option>
-            <option <%=report.type==='Regression' ? 'selected' : '' %>>Regression</option>
-            <option <%=report.type==='Smoke' ? 'selected' : '' %>>Smoke</option>
-            <option <%=report.type==='UI' ? 'selected' : '' %>>UI</option>
-            <option <%=report.type==='API' ? 'selected' : '' %>>API</option>
-         </select>
+         <!-- Row 2: Dropdowns -->
+         <div class="form-row">
+            <div class="form-group">
+               <label for="type">Type</label>
+               <select id="type" name="type">
+                  <option <%=report.type==='Functional' ? 'selected' : '' %>>Functional</option>
+                  <option <%=report.type==='Regression' ? 'selected' : '' %>>Regression</option>
+                  <option <%=report.type==='Smoke' ? 'selected' : '' %>>Smoke</option>
+                  <option <%=report.type==='UI' ? 'selected' : '' %>>UI</option>
+                  <option <%=report.type==='API' ? 'selected' : '' %>>API</option>
+               </select>
+            </div>
+            <div class="form-group">
+               <label for="priority">Priority</label>
+               <select id="priority" name="priority">
+                  <option <%=report.priority==='Low' ? 'selected' : '' %>>Low</option>
+                  <option <%=report.priority==='Medium' ? 'selected' : '' %>>Medium</option>
+                  <option <%=report.priority==='High' ? 'selected' : '' %>>High</option>
+               </select>
+            </div>
+            <div class="form-group">
+               <label for="status">Status</label>
+               <select id="status" name="status">
+                  <option <%=report.status==='Not Executed' ? 'selected' : '' %>>Not Executed</option>
+                  <option <%=report.status==='In Progress' ? 'selected' : '' %>>In Progress</option>
+                  <option <%=report.status==='Passed' ? 'selected' : '' %>>Passed</option>
+                  <option <%=report.status==='Failed' ? 'selected' : '' %>>Failed</option>
+                  <option <%=report.status==='Blocked' ? 'selected' : '' %>>Blocked</option>
+               </select>
+            </div>
+         </div>
 
-         <!-- Priority -->
-         <label for="priority">Priority</label>
-         <select id="priority" name="priority">
-            <option <%=report.priority==='Low' ? 'selected' : '' %>>Low</option>
-            <option <%=report.priority==='Medium' ? 'selected' : '' %>>Medium</option>
-            <option <%=report.priority==='High' ? 'selected' : '' %>>High</option>
-         </select>
-
-         <!-- Status -->
-         <label for="status">Status</label>
-         <select id="status" name="status">
-            <option <%=report.status==='Not Executed' ? 'selected' : '' %>>Not Executed</option>
-            <option <%=report.status==='In Progress' ? 'selected' : '' %>>In Progress</option>
-            <option <%=report.status==='Passed' ? 'selected' : '' %>>Passed</option>
-            <option <%=report.status==='Failed' ? 'selected' : '' %>>Failed</option>
-            <option <%=report.status==='Blocked' ? 'selected' : '' %>>Blocked</option>
-         </select>
-
-         <!-- Preconditions (Full Width) -->
-         <div class="form-group full-width">
+         <!-- Preconditions -->
+         <div class="form-group">
             <label for="preconditions">Preconditions</label>
             <textarea id="preconditions" name="preconditions" rows="4"><%= report.preconditions %></textarea>
          </div>
 
-         <!-- Test Steps (Full Width) -->
-         <div class="form-group full-width">
+         <!-- Test Steps -->
+         <div class="form-group">
             <label>Test Steps</label>
             <div id="steps-container">
                <% if (report.steps && report.steps.length> 0) { %>
@@ -172,26 +170,23 @@
                            </div>
                            <% } %>
             </div>
+            <button type="button" id="add-step-btn" class="button">Add Step</button>
          </div>
 
-         <!-- Add Step Button -->
-         <div></div> <!-- Empty cell to keep alignment -->
-         <button type="button" id="add-step-btn" class="button">Add Step</button>
-
-         <!-- Expected Result (Full Width) -->
-         <div class="form-group full-width">
+         <!-- Expected Result -->
+         <div class="form-group">
             <label for="expected">Expected Result</label>
             <textarea id="expected" name="expected" rows="4"><%= report.expected %></textarea>
          </div>
 
-         <!-- Actual Result (Full Width) -->
-         <div class="form-group full-width">
+         <!-- Actual Result -->
+         <div class="form-group">
             <label for="actual">Actual Result</label>
             <textarea id="actual" name="actual" rows="4"><%= report.actual %></textarea>
          </div>
 
-         <!-- Form Actions (Full Width) -->
-         <div class="form-group full-width">
+         <!-- Form Actions -->
+         <div class="form-actions">
             <button type="submit" class="button">Update Report</button>
             <a href="/" class="button button-secondary">Cancel</a>
          </div>
