@@ -34,15 +34,7 @@
    <p><b>Actual Result: </b><%= report.actual %></p>
 </div>
 <div class="report-details-box">
-  <!-- ... your other detail fields ... -->
-  <p><b>Type: </b>
-    <%= report.type %>
-  </p>
-  <p><b>Preconditions: </b>
-    <%= report.preconditions %>
-  </p>
 
-  <!-- NEW STEPS SECTION -->
   <div class="steps-view">
     <h4>Test Steps:</h4>
     <% if (report.steps && report.steps.length> 0) { %>
@@ -59,12 +51,6 @@
         <% } %>
   </div>
 
-  <p><b>Expected Result: </b>
-    <%= report.expected %>
-  </p>
-  <p><b>Actual Result: </b>
-    <%= report.actual %>
-  </p>
 </div>
 <div class="report-description-box">
 <p class="preserve-lines"><%= report.description %></p>

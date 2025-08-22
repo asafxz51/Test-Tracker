@@ -1,126 +1,173 @@
-<% layout('layouts/boilerplate') %>
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-    .step-input-group {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .step-number {
-        margin-right: 10px;
-        font-weight: bold;
-    }
-
-    .step-input-group input {
-        flex-grow: 1;
-        /* Make input take up available space */
-    }
-
-    .remove-step-btn {
-        margin-left: 10px;
-    }
-</style>
-
- <div class="form-container">
-  <h1>Add New Test Case</h1>
-  <form action="/add" method="POST">
-   <label for="title" style="margin-bottom: 3px;"><b>Title:</b></label>
-   <input type="text" name="title" placeholder="Title" required maxlength="17">
-   <label for="preconditions" style="margin-bottom: 3px;"><b>Preconditions:</b></label>
-   <input type="text" name="preconditions" placeholder="Preconditions" required>
-    <label for="expected" style="margin-bottom: 3px;"><b>Expected Result:</b></label>
-   <input type="text" name="expected" placeholder="Expected Result" required>
-       <label for="actual" style="margin-bottom: 3px;"><b>Actual Result:</b></label>
-       <input type="text" name="actual" placeholder="Actual Result" required>
-    <div class="form-group">
-        <label for="steps">Test Steps</label>
-        <!-- Container where dynamic step inputs will be added -->
-        <div id="steps-container">
-            <!-- Add one step by default -->
-            <div class="step-input-group">
-                <span class="step-number">1.</span>
-                <input type="text" name="steps" placeholder="Enter a test step" required>
-                <button type="button" class="button button-danger remove-step-btn">Remove</button>
-            </div>
-        </div>
-        <button type="button" id="add-step-btn" class="button">Add Step</button>
-    </div>
-       <label for="description" style="margin-bottom: 3px;"><b>Description:</b></label>
-   <textarea name="description" placeholder="Describe the test details..." required></textarea>
-   <label for="type" style="margin-bottom: 3px;"><b>Test Type:</b></label>
-   <select name="type">
-    <option value="Functional">Functional</option>
-    <option value="Regression">Regression</option>
-    <option value="Smoke">Smoke</option>
-    <option value="UI">UI</option>
-    <option value="API">API</option>
-   </select>
-   <label for="status" style="margin-bottom: 3px;"><b>Test Status:</b></label>
-   <select name="status">
-    <option value="Not Executed">Not Executed</option>
-    <option value="In Progress">In Progress</option>
-    <option value="Passed">Passed</option>
-    <option value="Failed">Failed</option>
-    <option value="Blocked">Blocked</option>
-    <option value="Skipped">Skipped</option>
-    <option value="Retest">Retest</option>
-   </select>
-    <label for="priority" style="margin-bottom: 3px;"><b>Priority:</b></label>
-   <select name="priority">
-    <option value="Low">Low</option>
-    <option value="Medium">Medium</option>
-    <option value="High">High</option>
-   </select>
-   <button type="submit">Add Report</button>
-  </form>
-  <div class="actions">
-   <a href="/">Cancel</a>
-  </div>
- </div>
-
-
-<script>
-    // SCRIPT FOR DYNAMIC STEPS - you will reuse this
-    document.addEventListener('DOMContentLoaded', function () {
-        const stepsContainer = document.getElementById('steps-container');
-        const addStepBtn = document.getElementById('add-step-btn');
-
-        // Function to re-number all steps
-        function renumberSteps() {
-            const stepGroups = stepsContainer.querySelectorAll('.step-input-group');
-            stepGroups.forEach((group, index) => {
-                group.querySelector('.step-number').textContent = `${index + 1}.`;
-            });
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Test - Test Tracker</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* CSS for the dynamic steps section */
+        .step-input-group {
+            display: flex;
+            align-items: center;
+            /* Vertically aligns items to the center */
+            margin-bottom: 10px;
+            gap: 10px;
+            /* Adds spacing between elements */
         }
 
-        // Event listener for the "Add Step" button
-        addStepBtn.addEventListener('click', () => {
-            const newStepGroup = document.createElement('div');
-            newStepGroup.classList.add('step-input-group');
-            newStepGroup.innerHTML = `
-                <span class="step-number"></span>
-                <input type="text" name="steps" placeholder="Enter a test step" required>
-                <button type="button" class="button button-danger remove-step-btn">Remove</button>
-            `;
-            stepsContainer.appendChild(newStepGroup);
+        .step-number {
+            font-weight: bold;
+            flex-shrink: 0;
+            /* Prevents the number from shrinking */
+        }
+
+        .step-input-group input[type="text"] {
+            flex-grow: 1;
+            /* Makes the input field take up all available space */
+            margin: 0;
+        }
+
+        .remove-step-btn {
+            flex-shrink: 0;
+            /* Prevents the button from shrinking */
+            font-weight: bold;
+
+            /* --- Sizing for a small, circular 'X' button --- */
+            border-radius: 50%;
+            /* Makes it a circle */
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            font-size: 16px;
+            line-height: 1;
+            min-width: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h1>Add New Test Case</h1>
+        <form action="/add" method="POST">
+
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="type">Type</label>
+                <select id="type" name="type">
+                    <option>Functional</option>
+                    <option>Regression</option>
+                    <option>Smoke</option>
+                    <option>UI</option>
+                    <option>API</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="priority">Priority</label>
+                <select id="priority" name="priority">
+                    <option>Low</option>
+                    <option selected>Medium</option>
+                    <option>High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option selected>Not Executed</option>
+                    <option>In Progress</option>
+                    <option>Passed</option>
+                    <option>Failed</option>
+                    <option>Blocked</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="preconditions">Preconditions</label>
+                <textarea id="preconditions" name="preconditions" rows="2"></textarea>
+            </div>
+
+            <!-- DYNAMIC STEPS SECTION -->
+            <div class="form-group">
+                <label for="steps">Test Steps</label>
+                <div id="steps-container">
+                    <!-- One step is added by default -->
+                    <div class="step-input-group">
+                        <span class="step-number">1.</span>
+                        <input type="text" name="steps" placeholder="Enter a test step" required>
+                        <button type="button" class="button button-danger remove-step-btn">X</button>
+                    </div>
+                </div>
+                <button type="button" id="add-step-btn" class="button">Add Step</button>
+            </div>
+
+            <div class="form-group">
+                <label for="expected">Expected Result</label>
+                <textarea id="expected" name="expected" rows="2"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="actual">Actual Result</label>
+                <textarea id="actual" name="actual" rows="2"></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="button">Create Report</button>
+                <a href="/" class="button button-secondary">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const stepsContainer = document.getElementById('steps-container');
+            const addStepBtn = document.getElementById('add-step-btn');
+
+            function renumberSteps() {
+                const stepGroups = stepsContainer.querySelectorAll('.step-input-group');
+                stepGroups.forEach((group, index) => {
+                    group.querySelector('.step-number').textContent = `${index + 1}.`;
+                });
+            }
+
+            addStepBtn.addEventListener('click', () => {
+                const newStepGroup = document.createElement('div');
+                newStepGroup.classList.add('step-input-group');
+                newStepGroup.innerHTML = `
+                    <span class="step-number"></span>
+                    <input type="text" name="steps" placeholder="Enter a test step" required>
+                    <button type="button" class="button button-danger remove-step-btn">X</button>
+                `;
+                stepsContainer.appendChild(newStepGroup);
+                renumberSteps();
+            });
+
+            stepsContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('remove-step-btn')) {
+                    if (stepsContainer.children.length > 1) {
+                        e.target.parentElement.remove();
+                        renumberSteps();
+                    } else {
+                        alert('You must have at least one step.');
+                    }
+                }
+            });
+
             renumberSteps();
         });
+    </script>
+</body>
 
-        // Event listener for "Remove" buttons (using event delegation)
-        stepsContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-step-btn')) {
-                // Prevent removing the very last step
-                if (stepsContainer.children.length > 1) {
-                    e.target.parentElement.remove();
-                    renumberSteps();
-                } else {
-                    alert('You must have at least one step.');
-                }
-            }
-        });
-
-        // Initial numbering
-        renumberSteps();
-    });
-</script>
+</html>
