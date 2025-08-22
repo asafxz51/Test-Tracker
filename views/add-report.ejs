@@ -4,88 +4,92 @@
 <head>
     <meta charset="UTF-8">
     <title>Add New Test Case - Test Tracker</title>
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Your main stylesheet -->
+    <link rel="stylesheet" href="/css/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         /*
-            NEW STYLES FOR THE CORRECT LAYOUT
+            NEW STYLES TO EXACTLY MATCH YOUR SCREENSHOT'S LAYOUT
             You can move this to your main styles.css file.
         */
         body {
-            background-color: #f4f7f9;
-            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
         }
 
         .form-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 40px auto;
-            padding: 30px;
-            background-color: #fff;
+            padding: 40px;
+            background-color: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9ecef;
         }
 
         .form-container h1 {
             margin-bottom: 30px;
-            font-size: 24px;
+            font-size: 28px;
+            font-weight: 600;
+            color: #343a40;
         }
 
-        /* Default layout for form groups: label on top */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-group label {
             display: block;
-            /* Ensures label is on its own line */
-            font-weight: bold;
+            font-weight: 600;
             margin-bottom: 8px;
-            /* Space between label and input */
+            color: #495057;
         }
 
         .form-group input[type="text"],
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
+            padding: 12px;
+            border: 1px solid #ced4da;
             border-radius: 4px;
+            font-size: 16px;
         }
 
-        /* --- SPECIAL LAYOUTS USING FLEXBOX --- */
-
-        /* A row container for side-by-side elements */
+        /* Flexbox container for side-by-side fields */
         .form-row {
             display: flex;
-            gap: 20px;
-            /* Space between items in a row */
-            align-items: flex-start;
-            /* Aligns items to the top */
+            gap: 25px;
+            /* Space between fields in a row */
         }
 
         .form-row .form-group {
-            flex-grow: 1;
-            /* Allows items to grow and fill the space */
             width: 100%;
-            /* Important for flex items */
+            /* Default to equal width */
         }
 
-        /* --- STYLES FOR THE DYNAMIC STEPS (PERFECT ALIGNMENT) --- */
+        /* Specific widths for Title and Description */
+        .form-group.title-group {
+            width: 35%;
+        }
+
+        .form-group.description-group {
+            width: 65%;
+        }
+
+        /* --- Dynamic Steps Styling --- */
         .step-input-group {
             display: flex;
             align-items: center;
-            /* THIS IS THE FIX for vertical alignment */
-            gap: 10px;
+            /* Vertically align number, input, and button */
+            gap: 15px;
             margin-bottom: 10px;
         }
 
         .step-number {
-            font-weight: bold;
+            font-weight: 600;
+            color: #6c757d;
         }
 
         .step-input-group input[type="text"] {
             flex-grow: 1;
-            /* Makes the input take up all the space */
         }
 
         .remove-step-btn {
@@ -103,11 +107,6 @@
             cursor: pointer;
             text-align: center;
         }
-
-        /* Final button styling */
-        .form-actions {
-            margin-top: 30px;
-        }
     </style>
 </head>
 
@@ -117,13 +116,13 @@
 
         <form action="/add" method="POST">
 
-            <!-- Row 1: Title and Description -->
+            <!-- Row 1: Title & Description -->
             <div class="form-row">
-                <div class="form-group" style="width: 40%;"> <!-- Title takes less space -->
+                <div class="form-group title-group">
                     <label for="title">Title</label>
                     <input type="text" id="title" name="title" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group description-group">
                     <label for="description">Description</label>
                     <textarea id="description" name="description" rows="4"></textarea>
                 </div>
@@ -143,3 +142,97 @@
                 </div>
                 <div class="form-group">
                     <label for="priority">Priority</label>
+                    <select id="priority" name="priority">
+                        <option>Low</option>
+                        <option selected>Medium</option>
+                        <option>High</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status">
+                        <option selected>Not Executed</option>
+                        <option>In Progress</option>
+                        <option>Passed</option>
+                        <option>Failed</option>
+                        <option>Blocked</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Preconditions -->
+            <div class="form-group">
+                <label for="preconditions">Preconditions</label>
+                <textarea id="preconditions" name="preconditions" rows="3"></textarea>
+            </div>
+
+            <!-- Test Steps -->
+            <div class="form-group">
+                <label>Test Steps</label>
+                <div id="steps-container">
+                    <div class="step-input-group">
+                        <span class="step-number">1.</span>
+                        <input type="text" name="steps" placeholder="Enter a test step" required>
+                        <button type="button" class="remove-step-btn">X</button>
+                    </div>
+                </div>
+                <button type="button" id="add-step-btn" class="button">Add Step</button>
+            </div>
+
+            <!-- Expected Result -->
+            <div class="form-group">
+                <label for="expected">Expected Result</label>
+                <textarea id="expected" name="expected" rows="3"></textarea>
+            </div>
+
+            <!-- Actual Result -->
+            <div class="form-group">
+                <label for="actual">Actual Result</label>
+                <textarea id="actual" name="actual" rows="3"></textarea>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit" class="button">Create Report</button>
+                <a href="/" class="button button-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const stepsContainer = document.getElementById('steps-container');
+            const addStepBtn = document.getElementById('add-step-btn');
+            function renumberSteps() {
+                const stepGroups = stepsContainer.querySelectorAll('.step-input-group');
+                stepGroups.forEach((group, index) => {
+                    group.querySelector('.step-number').textContent = `${index + 1}.`;
+                });
+            }
+            addStepBtn.addEventListener('click', () => {
+                const newStepGroup = document.createElement('div');
+                newStepGroup.classList.add('step-input-group');
+                newStepGroup.innerHTML = `
+                    <span class="step-number"></span>
+                    <input type="text" name="steps" placeholder="Enter a test step" required>
+                    <button type="button" class="remove-step-btn">X</button>
+                `;
+                stepsContainer.appendChild(newStepGroup);
+                renumberSteps();
+            });
+            stepsContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('remove-step-btn')) {
+                    if (stepsContainer.children.length > 1) {
+                        e.target.parentElement.remove();
+                        renumberSteps();
+                    } else {
+                        alert('You must have at least one step.');
+                    }
+                }
+            });
+            renumberSteps();
+        });
+    </script>
+</body>
+
+</html>
