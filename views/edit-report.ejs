@@ -40,21 +40,28 @@
          border-radius: 4px;
       }
 
-      /* FIX FOR CANCEL BUTTON */
+      /* --- THIS IS THE FIX FOR THE CANCEL BUTTON --- */
       .button-secondary {
          background-color: #6c757d;
+         /* Medium grey background */
          color: white;
+         /* White text */
+         text-decoration: none;
+         /* Remove underline if it's an <a> tag */
+         border: none;
       }
 
       .button-secondary:hover {
          background-color: #5a6268;
+         /* Darker grey on hover */
+         color: white;
+         /* Keep text white on hover */
       }
 
       /* DYNAMIC STEPS ALIGNMENT */
       .step-input-group {
          display: flex;
          align-items: center;
-         /* This is the fix for vertical alignment */
          gap: 10px;
          margin-bottom: 10px;
       }
@@ -167,6 +174,7 @@
             <button type="submit" class="button">Update Report</button>
             <a href="/" class="button button-secondary">Cancel</a>
          </div>
+
       </form>
    </div>
 

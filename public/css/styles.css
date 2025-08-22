@@ -640,3 +640,16 @@ button[type="submit"]:hover,
 .alert-success {
   background-color: #28a745;
 }
+
+/* FIX FOR CANCEL BUTTON */
+.button-secondary {
+  background-color: #6c757d;
+  color: white;
+  text-decoration: none;
+  border: none;
+}
+
+.button-secondary:hover {
+  background-color: #5a6268;
+  color: white;
+}
