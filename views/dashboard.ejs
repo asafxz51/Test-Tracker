@@ -7,13 +7,13 @@
   </a>
    <a href="/" class="logo">Test Tracker 📋​</a>
    <div class="nav-links">
-    <a href="/add" class="button button-primary">Add New Report</a>
+    <a href="/add" class="button button-primary">Add New Test</a>
     <a href="/logout" class="button button-secondary">Logout</a>
    </div>
   </nav>
 
   <div class="dashboard-header">
-   <h1>All Test Reports</h1>
+   <h1>All Test Cases</h1>
   <form action="/" method="GET" class="filter-form" onsubmit="cleanEmptyParams(event)">
     <div class="search-container">
       <input type="search" name="search" class="search-input" placeholder="Search by title or description..."
@@ -59,10 +59,10 @@
   <% if (!reports.length) { %>
     <div class="empty-state">
       <div class="empty-content">
-        <h2>No Reports Found</h2>
+        <h2>No Tests Found</h2>
         <p>
-          It looks like you haven't submitted any reports yet.
-          Click the button below to create your first report!
+          It looks like you haven't submitted any Tests yet.
+          Click the button below to create your first Test!
         </p>
         <a href="/add" class="btn-add">➕ Add New Report</a>
       </div>

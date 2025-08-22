@@ -45,17 +45,12 @@ router.get('/add', isAuthenticated, (req, res) => {
 
 // Add Report Handle - Now includes the author
 router.post('/add', isAuthenticated, async (req, res) => {
- const { title, description, status, priority, preconditions, expected, actual, type } = req.body;
+ // We can now destructure 'steps' from req.body
+ const { title, description, status, priority, preconditions, expected, actual, type, steps } = req.body;
 
  const newReport = new Report({
-  title,
-  description,
-  status,
-  priority,
-  preconditions,
-  expected,
-  actual,
-  type,
+  title, description, status, priority, preconditions, expected, actual, type,
+  steps: steps || [],
   author: req.session.userId,
  });
 
@@ -88,19 +83,23 @@ router.get('/edit/:id', isAuthenticated, async (req, res) => {
 
 // Edit Report Handle - Ensure user owns the report
 router.post('/edit/:id', isAuthenticated, async (req, res) => {
- const { title, description, status, priority, preconditions, expected, actual, type } = req.body;
+ // Also destructure 'steps' here
+ const { title, description, status, priority, preconditions, expected, actual, type, steps } = req.body;
 
  try {
   await Report.findOneAndUpdate(
    { _id: req.params.id, author: req.session.userId },
-   { title, description, status, priority, preconditions, expected, actual, type }
+   {
+    title, description, status, priority, preconditions, expected, actual, type,
+    steps: steps || []
+   }
   );
   res.redirect('/');
  } catch (err) {
   console.error(err);
   res.status(500).send('Error updating report');
  }
-});
+})
 
 // Delete Report Handle - Ensure user owns the report
 router.post('/delete/:id', isAuthenticated, async (req, res) => {

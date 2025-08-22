@@ -1,16 +1,19 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
-const ReportSchema = new mongoose.Schema({
+const reportSchema = new Schema({
  title: { type: String, required: true },
  description: { type: String, required: true },
- preconditions: { type: String, required: true },
- expected: { type: String, required: true },
- actual: { type: String, required: true },
- status: { type: String, enum: ['Not Executed', 'In Progress', 'Passed', 'Failed', 'Blocked', 'Skipped', 'Retest'], default: 'Not Executed' },
- priority: { type: String, enum: ['Low', 'Medium', 'High'], default: 'Medium' },
- type: { type: String, enum: ['Functional', 'Regression', 'Smoke', 'UI', 'API'], default: 'Functional' },
- author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+ author: { type: Schema.Types.ObjectId, ref: 'User' },
+ status: { type: String, default: 'Not Executed' },
+ priority: { type: String, default: 'Medium' },
+ type: { type: String, default: 'Functional' },
+ preconditions: String,
+ expected: String,
+ actual: String,
+ steps: [String],
+
  creationDate: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Report', ReportSchema);
+module.exports = mongoose.model('Report', reportSchema);

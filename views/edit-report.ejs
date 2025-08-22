@@ -1,7 +1,30 @@
 <% layout('layouts/boilerplate') %>
 
+<style>
+   .step-input-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+   }
+
+   .step-number {
+      margin-right: 10px;
+      font-weight: bold;
+   }
+
+   .step-input-group input {
+      flex-grow: 1;
+      /* Make input take up available space */
+   }
+
+   .remove-step-btn {
+      margin-left: 10px;
+   }
+
+</style>
+
  <div class="form-container">
-  <h1>Edit Test Report</h1>
+  <h1>Edit Test Case</h1>
   <form action="/edit/<%= report._id %>" method="POST">
   <label for="title" style="margin-bottom: 3px;"><b>Title:</b></label>
   <input type="text" name="title" value="<%= report.title %>" required placeholder="Title">
@@ -11,6 +34,29 @@
   <input type="text" name="expected" value="<%= report.expected %>" required placeholder="Expected Result">
    <label for="actual" style="margin-bottom: 3px;"><b>Actual Result:</b></label>
    <input type="text" name="actual" value="<%= report.actual %>" required placeholder="Actual Result">
+   <div class="form-group">
+      <label for="steps">Test Steps</label>
+      <div id="steps-container">
+         <%# Loop through existing steps from the report object %>
+            <% if (report.steps && report.steps.length> 0) { %>
+               <% report.steps.forEach(function(step) { %>
+                  <div class="step-input-group">
+                     <span class="step-number"></span>
+                     <input type="text" name="steps" value="<%= step %>" required>
+                     <button type="button" class="button button-danger remove-step-btn">Remove</button>
+                  </div>
+                  <% }); %>
+                     <% } else { %>
+                        <%# If no steps exist, render one empty input by default %>
+                           <div class="step-input-group">
+                              <span class="step-number">1.</span>
+                              <input type="text" name="steps" placeholder="Enter a test step" required>
+                              <button type="button" class="button button-danger remove-step-btn">Remove</button>
+                           </div>
+                           <% } %>
+      </div>
+      <button type="button" id="add-step-btn" class="button">Add Step</button>
+   </div>
   <label for="description" style="margin-bottom: 3px;"><b>Description:</b></label>
    <textarea name="description" placeholder="Describe the test details..." required><%= report.description %></textarea>
    <label for="type" style="margin-bottom: 3px;"><b>Test Type:</b></label>
@@ -39,9 +85,54 @@
     <option value="Medium" <%=report.priority==='Medium' ? 'selected' : '' %>>Medium</option>
     <option value="High" <%=report.priority==='High' ? 'selected' : '' %>>High</option>
    </select>
-   <button type="submit">Update Report</button>
+   <button type="submit">Update Test</button>
   </form>
   <div class="actions">
    <a href="/">Cancel</a>
   </div>
  </div>
+
+<script>
+   // SCRIPT FOR DYNAMIC STEPS - you will reuse this
+   document.addEventListener('DOMContentLoaded', function () {
+      const stepsContainer = document.getElementById('steps-container');
+      const addStepBtn = document.getElementById('add-step-btn');
+
+      // Function to re-number all steps
+      function renumberSteps() {
+         const stepGroups = stepsContainer.querySelectorAll('.step-input-group');
+         stepGroups.forEach((group, index) => {
+            group.querySelector('.step-number').textContent = `${index + 1}.`;
+         });
+      }
+
+      // Event listener for the "Add Step" button
+      addStepBtn.addEventListener('click', () => {
+         const newStepGroup = document.createElement('div');
+         newStepGroup.classList.add('step-input-group');
+         newStepGroup.innerHTML = `
+                <span class="step-number"></span>
+                <input type="text" name="steps" placeholder="Enter a test step" required>
+                <button type="button" class="button button-danger remove-step-btn">Remove</button>
+            `;
+         stepsContainer.appendChild(newStepGroup);
+         renumberSteps();
+      });
+
+      // Event listener for "Remove" buttons (using event delegation)
+      stepsContainer.addEventListener('click', (e) => {
+         if (e.target.classList.contains('remove-step-btn')) {
+            // Prevent removing the very last step
+            if (stepsContainer.children.length > 1) {
+               e.target.parentElement.remove();
+               renumberSteps();
+            } else {
+               alert('You must have at least one step.');
+            }
+         }
+      });
+
+      // Initial numbering
+      renumberSteps();
+   });
+</script>

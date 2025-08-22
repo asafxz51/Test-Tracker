@@ -33,6 +33,39 @@
    <p><b>Expected Result: </b><%= report.expected %></p>
    <p><b>Actual Result: </b><%= report.actual %></p>
 </div>
+<div class="report-details-box">
+  <!-- ... your other detail fields ... -->
+  <p><b>Type: </b>
+    <%= report.type %>
+  </p>
+  <p><b>Preconditions: </b>
+    <%= report.preconditions %>
+  </p>
+
+  <!-- NEW STEPS SECTION -->
+  <div class="steps-view">
+    <h4>Test Steps:</h4>
+    <% if (report.steps && report.steps.length> 0) { %>
+      <ol>
+        <%# Use an ordered list for automatic numbering %>
+          <% report.steps.forEach(function(step) { %>
+            <li>
+              <%= step %>
+            </li>
+            <% }); %>
+      </ol>
+      <% } else { %>
+        <p>No steps defined for this test case.</p>
+        <% } %>
+  </div>
+
+  <p><b>Expected Result: </b>
+    <%= report.expected %>
+  </p>
+  <p><b>Actual Result: </b>
+    <%= report.actual %>
+  </p>
+</div>
 <div class="report-description-box">
 <p class="preserve-lines"><%= report.description %></p>
   </div>
