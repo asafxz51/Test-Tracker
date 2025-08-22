@@ -3,46 +3,113 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Add New Test - Test Tracker</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <title>Add New Test Case - Test Tracker</title>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Your main stylesheet -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* CSS for the dynamic steps section */
+        /*
+            NEW STYLES TO MATCH YOUR SCREENSHOT
+            You can move this to your main styles.css file if you prefer.
+        */
+        body {
+            background-color: #f4f7f9;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h1 {
+            text-align: left;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .form-grid {
+            display: grid;
+            /* Create a 2-column grid. Label in the first, input in the second. */
+            grid-template-columns: 150px 1fr;
+            gap: 20px;
+            /* Space between rows and columns */
+            align-items: center;
+            /* Vertically align items in each row */
+        }
+
+        .form-grid label {
+            font-weight: bold;
+            text-align: left;
+        }
+
+        /* --- STYLES FOR FULL-WIDTH ITEMS --- */
+        /* Make Description, Textareas, and Steps span both columns */
+        .form-group.full-width {
+            grid-column: 1 / -1;
+            /* Span from the first to the last column line */
+        }
+
+        .form-group.full-width label {
+            margin-bottom: 8px;
+            display: block;
+            /* Make label take its own line */
+        }
+
+        .form-group.full-width textarea,
+        .form-group.full-width #steps-container {
+            width: 100%;
+        }
+
+        /* --- STYLES FOR THE DYNAMIC STEPS --- */
+        #add-step-btn {
+            grid-column: 2 / 3;
+            /* Align the "Add Step" button under the inputs */
+            justify-self: start;
+            /* Align it to the left */
+        }
+
         .step-input-group {
             display: flex;
             align-items: center;
-            /* Vertically aligns items to the center */
-            margin-bottom: 10px;
             gap: 10px;
-            /* Adds spacing between elements */
+            margin-bottom: 10px;
         }
 
         .step-number {
             font-weight: bold;
-            flex-shrink: 0;
-            /* Prevents the number from shrinking */
         }
 
         .step-input-group input[type="text"] {
             flex-grow: 1;
-            /* Makes the input field take up all available space */
-            margin: 0;
         }
 
         .remove-step-btn {
             flex-shrink: 0;
-            /* Prevents the button from shrinking */
             font-weight: bold;
-
-            /* --- Sizing for a small, circular 'X' button --- */
+            background-color: #e74c3c;
+            /* Red color from image */
+            color: white;
+            border: none;
             border-radius: 50%;
-            /* Makes it a circle */
-            width: 30px;
-            height: 30px;
+            width: 24px;
+            height: 24px;
             padding: 0;
-            font-size: 16px;
-            line-height: 1;
-            min-width: auto;
+            font-size: 14px;
+            line-height: 24px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        /* General Button Styling to match image */
+        .button,
+        button[type="submit"] {
+            background-color: #007bff;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -50,79 +117,84 @@
 <body>
     <div class="form-container">
         <h1>Add New Test Case</h1>
-        <form action="/add" method="POST">
 
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" id="title" name="title" required>
-            </div>
+        <form action="/add" method="POST" class="form-grid">
 
-            <div class="form-group">
+            <!-- Title -->
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required>
+
+            <!-- Description (Full Width) -->
+            <div class="form-group full-width">
                 <label for="description">Description</label>
                 <textarea id="description" name="description" rows="4"></textarea>
             </div>
 
-            <div class="form-group">
-                <label for="type">Type</label>
-                <select id="type" name="type">
-                    <option>Functional</option>
-                    <option>Regression</option>
-                    <option>Smoke</option>
-                    <option>UI</option>
-                    <option>API</option>
-                </select>
-            </div>
+            <!-- Type -->
+            <label for="type">Type</label>
+            <select id="type" name="type">
+                <option selected>Functional</option>
+                <option>Regression</option>
+                <option>Smoke</option>
+                <option>UI</option>
+                <option>API</option>
+            </select>
 
-            <div class="form-group">
-                <label for="priority">Priority</label>
-                <select id="priority" name="priority">
-                    <option>Low</option>
-                    <option selected>Medium</option>
-                    <option>High</option>
-                </select>
-            </div>
+            <!-- Priority -->
+            <label for="priority">Priority</label>
+            <select id="priority" name="priority">
+                <option>Low</option>
+                <option selected>Medium</option>
+                <option>High</option>
+            </select>
 
-            <div class="form-group">
-                <label for="status">Status</label>
-                <select id="status" name="status">
-                    <option selected>Not Executed</option>
-                    <option>In Progress</option>
-                    <option>Passed</option>
-                    <option>Failed</option>
-                    <option>Blocked</option>
-                </select>
-            </div>
+            <!-- Status -->
+            <label for="status">Status</label>
+            <select id="status" name="status">
+                <option selected>Not Executed</option>
+                <option>In Progress</option>
+                <option>Passed</option>
+                <option>Failed</option>
+                <option>Blocked</option>
+            </select>
 
-            <div class="form-group">
+            <!-- Preconditions (Full Width) -->
+            <div class="form-group full-width">
                 <label for="preconditions">Preconditions</label>
-                <textarea id="preconditions" name="preconditions" rows="2"></textarea>
+                <textarea id="preconditions" name="preconditions" rows="4"></textarea>
             </div>
 
-            <!-- DYNAMIC STEPS SECTION -->
-            <div class="form-group">
-                <label for="steps">Test Steps</label>
+            <!-- Test Steps (Full Width) -->
+            <div class="form-group full-width">
+                <label>Test Steps</label>
                 <div id="steps-container">
-                    <!-- One step is added by default -->
                     <div class="step-input-group">
                         <span class="step-number">1.</span>
                         <input type="text" name="steps" placeholder="Enter a test step" required>
-                        <button type="button" class="button button-danger remove-step-btn">X</button>
+                        <button type="button" class="remove-step-btn">X</button>
                     </div>
                 </div>
-                <button type="button" id="add-step-btn" class="button">Add Step</button>
             </div>
 
-            <div class="form-group">
+            <!-- Add Step Button -->
+            <div></div> <!-- Empty cell to keep alignment -->
+            <button type="button" id="add-step-btn" class="button">Add Step</button>
+
+
+            <!-- Expected Result (Full Width) -->
+            <div class="form-group full-width">
                 <label for="expected">Expected Result</label>
-                <textarea id="expected" name="expected" rows="2"></textarea>
+                <textarea id="expected" name="expected" rows="4"></textarea>
             </div>
 
-            <div class="form-group">
+            <!-- Actual Result (Full Width) -->
+            <div class="form-group full-width">
                 <label for="actual">Actual Result</label>
-                <textarea id="actual" name="actual" rows="2"></textarea>
+                <textarea id="actual" name="actual" rows="4"></textarea>
             </div>
 
-            <div class="form-actions">
+            <!-- Form Actions (Full Width) -->
+            <div class="form-group full-width">
                 <button type="submit" class="button">Create Report</button>
                 <a href="/" class="button button-secondary">Cancel</a>
             </div>
@@ -148,7 +220,7 @@
                 newStepGroup.innerHTML = `
                     <span class="step-number"></span>
                     <input type="text" name="steps" placeholder="Enter a test step" required>
-                    <button type="button" class="button button-danger remove-step-btn">X</button>
+                    <button type="button" class="remove-step-btn">X</button>
                 `;
                 stepsContainer.appendChild(newStepGroup);
                 renumberSteps();

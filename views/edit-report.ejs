@@ -3,46 +3,101 @@
 
 <head>
    <meta charset="UTF-8">
-   <title>Edit Test - Test Tracker</title>
-   <link rel="stylesheet" href="/css/styles.css">
+   <title>Edit Test Case - Test Tracker</title>
+   <link rel="stylesheet" href="/css/styles.css"> <!-- Your main stylesheet -->
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <style>
-      /* CSS for the dynamic steps section */
+      /*
+            STYLES TO MATCH YOUR SCREENSHOT
+            These are identical to the 'add-report.ejs' styles.
+        */
+      body {
+         background-color: #f4f7f9;
+         font-family: Arial, sans-serif;
+         color: #333;
+      }
+
+      .form-container {
+         max-width: 800px;
+         margin: 40px auto;
+         padding: 30px;
+         background-color: #fff;
+         border-radius: 8px;
+         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-container h1 {
+         text-align: left;
+         margin-bottom: 30px;
+         font-size: 24px;
+      }
+
+      .form-grid {
+         display: grid;
+         grid-template-columns: 150px 1fr;
+         gap: 20px;
+         align-items: center;
+      }
+
+      .form-grid label {
+         font-weight: bold;
+         text-align: left;
+      }
+
+      .form-group.full-width {
+         grid-column: 1 / -1;
+      }
+
+      .form-group.full-width label {
+         margin-bottom: 8px;
+         display: block;
+      }
+
+      .form-group.full-width textarea,
+      .form-group.full-width #steps-container {
+         width: 100%;
+      }
+
+      #add-step-btn {
+         grid-column: 2 / 3;
+         justify-self: start;
+      }
+
       .step-input-group {
          display: flex;
          align-items: center;
-         /* Vertically aligns items to the center */
-         margin-bottom: 10px;
          gap: 10px;
-         /* Adds spacing between elements */
+         margin-bottom: 10px;
       }
 
       .step-number {
          font-weight: bold;
-         flex-shrink: 0;
-         /* Prevents the number from shrinking */
       }
 
       .step-input-group input[type="text"] {
          flex-grow: 1;
-         /* Makes the input field take up all available space */
-         margin: 0;
       }
 
       .remove-step-btn {
          flex-shrink: 0;
-         /* Prevents the button from shrinking */
          font-weight: bold;
-
-         /* --- Sizing for a small, circular 'X' button --- */
+         background-color: #e74c3c;
+         color: white;
+         border: none;
          border-radius: 50%;
-         /* Makes it a circle */
-         width: 30px;
-         height: 30px;
+         width: 24px;
+         height: 24px;
          padding: 0;
-         font-size: 16px;
-         line-height: 1;
-         min-width: auto;
+         font-size: 14px;
+         line-height: 24px;
+         cursor: pointer;
+         text-align: center;
+      }
+
+      .button,
+      button[type="submit"] {
+         background-color: #007bff;
+         border-radius: 5px;
       }
    </style>
 </head>
@@ -50,88 +105,93 @@
 <body>
    <div class="form-container">
       <h1>Edit Test Case</h1>
-      <form action="/edit/<%= report._id %>" method="POST">
 
-         <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title" value="<%= report.title %>" required>
-         </div>
+      <form action="/edit/<%= report._id %>" method="POST" class="form-grid">
 
-         <div class="form-group">
+         <!-- Title -->
+         <label for="title">Title</label>
+         <input type="text" id="title" name="title" value="<%= report.title %>" required>
+
+         <!-- Description (Full Width) -->
+         <div class="form-group full-width">
             <label for="description">Description</label>
             <textarea id="description" name="description" rows="4"><%= report.description %></textarea>
          </div>
 
-         <div class="form-group">
-            <label for="type">Type</label>
-            <select id="type" name="type">
-               <option <%=report.type==='Functional' ? 'selected' : '' %>>Functional</option>
-               <option <%=report.type==='Regression' ? 'selected' : '' %>>Regression</option>
-               <option <%=report.type==='Smoke' ? 'selected' : '' %>>Smoke</option>
-               <option <%=report.type==='UI' ? 'selected' : '' %>>UI</option>
-               <option <%=report.type==='API' ? 'selected' : '' %>>API</option>
-            </select>
-         </div>
+         <!-- Type -->
+         <label for="type">Type</label>
+         <select id="type" name="type">
+            <option <%=report.type==='Functional' ? 'selected' : '' %>>Functional</option>
+            <option <%=report.type==='Regression' ? 'selected' : '' %>>Regression</option>
+            <option <%=report.type==='Smoke' ? 'selected' : '' %>>Smoke</option>
+            <option <%=report.type==='UI' ? 'selected' : '' %>>UI</option>
+            <option <%=report.type==='API' ? 'selected' : '' %>>API</option>
+         </select>
 
-         <div class="form-group">
-            <label for="priority">Priority</label>
-            <select id="priority" name="priority">
-               <option <%=report.priority==='Low' ? 'selected' : '' %>>Low</option>
-               <option <%=report.priority==='Medium' ? 'selected' : '' %>>Medium</option>
-               <option <%=report.priority==='High' ? 'selected' : '' %>>High</option>
-            </select>
-         </div>
+         <!-- Priority -->
+         <label for="priority">Priority</label>
+         <select id="priority" name="priority">
+            <option <%=report.priority==='Low' ? 'selected' : '' %>>Low</option>
+            <option <%=report.priority==='Medium' ? 'selected' : '' %>>Medium</option>
+            <option <%=report.priority==='High' ? 'selected' : '' %>>High</option>
+         </select>
 
-         <div class="form-group">
-            <label for="status">Status</label>
-            <select id="status" name="status">
-               <option <%=report.status==='Not Executed' ? 'selected' : '' %>>Not Executed</option>
-               <option <%=report.status==='In Progress' ? 'selected' : '' %>>In Progress</option>
-               <option <%=report.status==='Passed' ? 'selected' : '' %>>Passed</option>
-               <option <%=report.status==='Failed' ? 'selected' : '' %>>Failed</option>
-               <option <%=report.status==='Blocked' ? 'selected' : '' %>>Blocked</option>
-            </select>
-         </div>
+         <!-- Status -->
+         <label for="status">Status</label>
+         <select id="status" name="status">
+            <option <%=report.status==='Not Executed' ? 'selected' : '' %>>Not Executed</option>
+            <option <%=report.status==='In Progress' ? 'selected' : '' %>>In Progress</option>
+            <option <%=report.status==='Passed' ? 'selected' : '' %>>Passed</option>
+            <option <%=report.status==='Failed' ? 'selected' : '' %>>Failed</option>
+            <option <%=report.status==='Blocked' ? 'selected' : '' %>>Blocked</option>
+         </select>
 
-         <div class="form-group">
+         <!-- Preconditions (Full Width) -->
+         <div class="form-group full-width">
             <label for="preconditions">Preconditions</label>
-            <textarea id="preconditions" name="preconditions" rows="2"><%= report.preconditions %></textarea>
+            <textarea id="preconditions" name="preconditions" rows="4"><%= report.preconditions %></textarea>
          </div>
 
-         <!-- DYNAMIC STEPS SECTION -->
-         <div class="form-group">
-            <label for="steps">Test Steps</label>
+         <!-- Test Steps (Full Width) -->
+         <div class="form-group full-width">
+            <label>Test Steps</label>
             <div id="steps-container">
                <% if (report.steps && report.steps.length> 0) { %>
                   <% report.steps.forEach(function(step) { %>
                      <div class="step-input-group">
                         <span class="step-number"></span>
                         <input type="text" name="steps" value="<%= step %>" required>
-                        <button type="button" class="button button-danger remove-step-btn">X</button>
+                        <button type="button" class="remove-step-btn">X</button>
                      </div>
                      <% }); %>
                         <% } else { %>
                            <div class="step-input-group">
                               <span class="step-number">1.</span>
                               <input type="text" name="steps" placeholder="Enter a test step" required>
-                              <button type="button" class="button button-danger remove-step-btn">X</button>
+                              <button type="button" class="remove-step-btn">X</button>
                            </div>
                            <% } %>
             </div>
-            <button type="button" id="add-step-btn" class="button">Add Step</button>
          </div>
 
-         <div class="form-group">
+         <!-- Add Step Button -->
+         <div></div> <!-- Empty cell to keep alignment -->
+         <button type="button" id="add-step-btn" class="button">Add Step</button>
+
+         <!-- Expected Result (Full Width) -->
+         <div class="form-group full-width">
             <label for="expected">Expected Result</label>
-            <textarea id="expected" name="expected" rows="2"><%= report.expected %></textarea>
+            <textarea id="expected" name="expected" rows="4"><%= report.expected %></textarea>
          </div>
 
-         <div class="form-group">
+         <!-- Actual Result (Full Width) -->
+         <div class="form-group full-width">
             <label for="actual">Actual Result</label>
-            <textarea id="actual" name="actual" rows="2"><%= report.actual %></textarea>
+            <textarea id="actual" name="actual" rows="4"><%= report.actual %></textarea>
          </div>
 
-         <div class="form-actions">
+         <!-- Form Actions (Full Width) -->
+         <div class="form-group full-width">
             <button type="submit" class="button">Update Report</button>
             <a href="/" class="button button-secondary">Cancel</a>
          </div>
@@ -157,7 +217,7 @@
             newStepGroup.innerHTML = `
                     <span class="step-number"></span>
                     <input type="text" name="steps" placeholder="Enter a test step" required>
-                    <button type="button" class="button button-danger remove-step-btn">X</button>
+                    <button type="button" class="remove-step-btn">X</button>
                 `;
             stepsContainer.appendChild(newStepGroup);
             renumberSteps();
@@ -174,6 +234,7 @@
             }
          });
 
+         // Run this on page load to number the initial steps
          renumberSteps();
       });
    </script>
