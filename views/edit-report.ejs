@@ -7,13 +7,9 @@
    <link rel="stylesheet" href="/css/styles.css"> <!-- Your main stylesheet -->
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <style>
-      /*
-            STYLES FOR THE CORRECT LAYOUT
-            These are identical to the 'add-report.ejs' styles.
-        */
+      /* STYLES FOR THE CORRECT LAYOUT */
       body {
          background-color: #f4f7f9;
-         font-family: Arial, sans-serif;
       }
 
       .form-container {
@@ -23,11 +19,6 @@
          background-color: #fff;
          border-radius: 8px;
          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      .form-container h1 {
-         margin-bottom: 30px;
-         font-size: 24px;
       }
 
       .form-group {
@@ -49,20 +40,21 @@
          border-radius: 4px;
       }
 
-      .form-row {
-         display: flex;
-         gap: 20px;
-         align-items: flex-start;
+      /* FIX FOR CANCEL BUTTON */
+      .button-secondary {
+         background-color: #6c757d;
+         color: white;
       }
 
-      .form-row .form-group {
-         flex-grow: 1;
-         width: 100%;
+      .button-secondary:hover {
+         background-color: #5a6268;
       }
 
+      /* DYNAMIC STEPS ALIGNMENT */
       .step-input-group {
          display: flex;
          align-items: center;
+         /* This is the fix for vertical alignment */
          gap: 10px;
          margin-bottom: 10px;
       }
@@ -85,14 +77,8 @@
          width: 24px;
          height: 24px;
          padding: 0;
-         font-size: 14px;
-         line-height: 24px;
          cursor: pointer;
          text-align: center;
-      }
-
-      .form-actions {
-         margin-top: 30px;
       }
    </style>
 </head>
@@ -103,54 +89,45 @@
 
       <form action="/edit/<%= report._id %>" method="POST">
 
-         <!-- Row 1: Title and Description -->
-         <div class="form-row">
-            <div class="form-group" style="width: 40%;">
-               <label for="title">Title</label>
-               <input type="text" id="title" name="title" value="<%= report.title %>" required>
-            </div>
-            <div class="form-group">
-               <label for="description">Description</label>
-               <textarea id="description" name="description" rows="4"><%= report.description %></textarea>
-            </div>
+         <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" value="<%= report.title %>" required>
          </div>
-
-         <!-- Row 2: Dropdowns -->
-         <div class="form-row">
-            <div class="form-group">
-               <label for="type">Type</label>
-               <select id="type" name="type">
-                  <option <%=report.type==='Functional' ? 'selected' : '' %>>Functional</option>
-                  <option <%=report.type==='Regression' ? 'selected' : '' %>>Regression</option>
-                  <option <%=report.type==='Smoke' ? 'selected' : '' %>>Smoke</option>
-                  <option <%=report.type==='UI' ? 'selected' : '' %>>UI</option>
-                  <option <%=report.type==='API' ? 'selected' : '' %>>API</option>
-               </select>
-            </div>
-            <div class="form-group">
-               <label for="priority">Priority</label>
-               <select id="priority" name="priority">
-                  <option <%=report.priority==='Low' ? 'selected' : '' %>>Low</option>
-                  <option <%=report.priority==='Medium' ? 'selected' : '' %>>Medium</option>
-                  <option <%=report.priority==='High' ? 'selected' : '' %>>High</option>
-               </select>
-            </div>
-            <div class="form-group">
-               <label for="status">Status</label>
-               <select id="status" name="status">
-                  <option <%=report.status==='Not Executed' ? 'selected' : '' %>>Not Executed</option>
-                  <option <%=report.status==='In Progress' ? 'selected' : '' %>>In Progress</option>
-                  <option <%=report.status==='Passed' ? 'selected' : '' %>>Passed</option>
-                  <option <%=report.status==='Failed' ? 'selected' : '' %>>Failed</option>
-                  <option <%=report.status==='Blocked' ? 'selected' : '' %>>Blocked</option>
-               </select>
-            </div>
+         <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4"><%= report.description %></textarea>
          </div>
-
-         <!-- Preconditions -->
+         <div class="form-group">
+            <label for="type">Type</label>
+            <select id="type" name="type">
+               <option <%=report.type==='Functional' ? 'selected' : '' %>>Functional</option>
+               <option <%=report.type==='Regression' ? 'selected' : '' %>>Regression</option>
+               <option <%=report.type==='Smoke' ? 'selected' : '' %>>Smoke</option>
+               <option <%=report.type==='UI' ? 'selected' : '' %>>UI</option>
+               <option <%=report.type==='API' ? 'selected' : '' %>>API</option>
+            </select>
+         </div>
+         <div class="form-group">
+            <label for="priority">Priority</label>
+            <select id="priority" name="priority">
+               <option <%=report.priority==='Low' ? 'selected' : '' %>>Low</option>
+               <option <%=report.priority==='Medium' ? 'selected' : '' %>>Medium</option>
+               <option <%=report.priority==='High' ? 'selected' : '' %>>High</option>
+            </select>
+         </div>
+         <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" name="status">
+               <option <%=report.status==='Not Executed' ? 'selected' : '' %>>Not Executed</option>
+               <option <%=report.status==='In Progress' ? 'selected' : '' %>>In Progress</option>
+               <option <%=report.status==='Passed' ? 'selected' : '' %>>Passed</option>
+               <option <%=report.status==='Failed' ? 'selected' : '' %>>Failed</option>
+               <option <%=report.status==='Blocked' ? 'selected' : '' %>>Blocked</option>
+            </select>
+         </div>
          <div class="form-group">
             <label for="preconditions">Preconditions</label>
-            <textarea id="preconditions" name="preconditions" rows="4"><%= report.preconditions %></textarea>
+            <input type="text" id="preconditions" name="preconditions" value="<%= report.preconditions %>">
          </div>
 
          <!-- Test Steps -->
@@ -176,24 +153,20 @@
             <button type="button" id="add-step-btn" class="button">Add Step</button>
          </div>
 
-         <!-- Expected Result -->
          <div class="form-group">
             <label for="expected">Expected Result</label>
-            <textarea id="expected" name="expected" rows="4"><%= report.expected %></textarea>
+            <input type="text" id="expected" name="expected" value="<%= report.expected %>">
          </div>
 
-         <!-- Actual Result -->
          <div class="form-group">
             <label for="actual">Actual Result</label>
-            <textarea id="actual" name="actual" rows="4"><%= report.actual %></textarea>
+            <input type="text" id="actual" name="actual" value="<%= report.actual %>">
          </div>
 
-         <!-- Form Actions -->
          <div class="form-actions">
             <button type="submit" class="button">Update Report</button>
             <a href="/" class="button button-secondary">Cancel</a>
          </div>
-
       </form>
    </div>
 
@@ -201,14 +174,12 @@
       document.addEventListener('DOMContentLoaded', function () {
          const stepsContainer = document.getElementById('steps-container');
          const addStepBtn = document.getElementById('add-step-btn');
-
          function renumberSteps() {
             const stepGroups = stepsContainer.querySelectorAll('.step-input-group');
             stepGroups.forEach((group, index) => {
                group.querySelector('.step-number').textContent = `${index + 1}.`;
             });
          }
-
          addStepBtn.addEventListener('click', () => {
             const newStepGroup = document.createElement('div');
             newStepGroup.classList.add('step-input-group');
@@ -220,7 +191,6 @@
             stepsContainer.appendChild(newStepGroup);
             renumberSteps();
          });
-
          stepsContainer.addEventListener('click', (e) => {
             if (e.target.classList.contains('remove-step-btn')) {
                if (stepsContainer.children.length > 1) {
@@ -231,8 +201,6 @@
                }
             }
          });
-
-         // Run this on page load to number the initial steps
          renumberSteps();
       });
    </script>

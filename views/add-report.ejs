@@ -4,88 +4,64 @@
 <head>
     <meta charset="UTF-8">
     <title>Add New Test Case - Test Tracker</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Your main stylesheet -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /*
-            NEW STYLES TO EXACTLY MATCH YOUR SCREENSHOT'S LAYOUT
-            You can move this to your main styles.css file.
-        */
+        /* STYLES FOR THE CORRECT LAYOUT */
         body {
-            background-color: #f8f9fa;
+            background-color: #f4f7f9;
         }
 
         .form-container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 40px auto;
-            padding: 40px;
-            background-color: #ffffff;
+            padding: 30px;
+            background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
-            border: 1px solid #e9ecef;
-        }
-
-        .form-container h1 {
-            margin-bottom: 30px;
-            font-size: 28px;
-            font-weight: 600;
-            color: #343a40;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            font-weight: 600;
+            font-weight: bold;
             margin-bottom: 8px;
-            color: #495057;
         }
 
         .form-group input[type="text"],
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ced4da;
+            padding: 10px;
+            border: 1px solid #ccc;
             border-radius: 4px;
-            font-size: 16px;
         }
 
-        /* Flexbox container for side-by-side fields */
-        .form-row {
-            display: flex;
-            gap: 25px;
-            /* Space between fields in a row */
+        /* FIX FOR CANCEL BUTTON */
+        .button-secondary {
+            background-color: #6c757d;
+            /* A standard grey color */
+            color: white;
         }
 
-        .form-row .form-group {
-            width: 100%;
-            /* Default to equal width */
+        .button-secondary:hover {
+            background-color: #5a6268;
         }
 
-        /* Specific widths for Title and Description */
-        .form-group.title-group {
-            width: 35%;
-        }
-
-        .form-group.description-group {
-            width: 65%;
-        }
-
-        /* --- Dynamic Steps Styling --- */
+        /* DYNAMIC STEPS ALIGNMENT */
         .step-input-group {
             display: flex;
             align-items: center;
-            /* Vertically align number, input, and button */
-            gap: 15px;
+            /* This is the fix for vertical alignment */
+            gap: 10px;
             margin-bottom: 10px;
         }
 
         .step-number {
-            font-weight: 600;
-            color: #6c757d;
+            font-weight: bold;
         }
 
         .step-input-group input[type="text"] {
@@ -102,8 +78,6 @@
             width: 24px;
             height: 24px;
             padding: 0;
-            font-size: 14px;
-            line-height: 24px;
             cursor: pointer;
             text-align: center;
         }
@@ -116,54 +90,45 @@
 
         <form action="/add" method="POST">
 
-            <!-- Row 1: Title & Description -->
-            <div class="form-row">
-                <div class="form-group title-group">
-                    <label for="title">Title</label>
-                    <input type="text" id="title" name="title" required>
-                </div>
-                <div class="form-group description-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" rows="4"></textarea>
-                </div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" required>
             </div>
-
-            <!-- Row 2: Dropdowns -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="type">Type</label>
-                    <select id="type" name="type">
-                        <option selected>Functional</option>
-                        <option>Regression</option>
-                        <option>Smoke</option>
-                        <option>UI</option>
-                        <option>API</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="priority">Priority</label>
-                    <select id="priority" name="priority">
-                        <option>Low</option>
-                        <option selected>Medium</option>
-                        <option>High</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="status">Status</label>
-                    <select id="status" name="status">
-                        <option selected>Not Executed</option>
-                        <option>In Progress</option>
-                        <option>Passed</option>
-                        <option>Failed</option>
-                        <option>Blocked</option>
-                    </select>
-                </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4"></textarea>
             </div>
-
-            <!-- Preconditions -->
+            <div class="form-group">
+                <label for="type">Type</label>
+                <select id="type" name="type">
+                    <option selected>Functional</option>
+                    <option>Regression</option>
+                    <option>Smoke</option>
+                    <option>UI</option>
+                    <option>API</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="priority">Priority</label>
+                <select id="priority" name="priority">
+                    <option>Low</option>
+                    <option selected>Medium</option>
+                    <option>High</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option selected>Not Executed</option>
+                    <option>In Progress</option>
+                    <option>Passed</option>
+                    <option>Failed</option>
+                    <option>Blocked</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label for="preconditions">Preconditions</label>
-                <textarea id="preconditions" name="preconditions" rows="3"></textarea>
+                <input type="text" id="preconditions" name="preconditions">
             </div>
 
             <!-- Test Steps -->
@@ -179,23 +144,21 @@
                 <button type="button" id="add-step-btn" class="button">Add Step</button>
             </div>
 
-            <!-- Expected Result -->
             <div class="form-group">
                 <label for="expected">Expected Result</label>
-                <textarea id="expected" name="expected" rows="3"></textarea>
+                <input type="text" id="expected" name="expected">
             </div>
 
-            <!-- Actual Result -->
             <div class="form-group">
                 <label for="actual">Actual Result</label>
-                <textarea id="actual" name="actual" rows="3"></textarea>
+                <input type="text" id="actual" name="actual">
             </div>
 
-            <!-- Form Actions -->
             <div class="form-actions">
                 <button type="submit" class="button">Create Report</button>
                 <a href="/" class="button button-secondary">Cancel</a>
             </div>
+
         </form>
     </div>
 
