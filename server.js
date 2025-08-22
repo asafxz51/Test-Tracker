@@ -12,11 +12,6 @@ const reportRoutes = require('./routes/reports');
 
 const app = express();
 
-mongoose.connect(process.env.MONGODB_URI)
- .then(() => console.log('MongoDB is connected successfully.'))
- .catch(err => console.error('MongoDB connection error:', err));
-
-
 
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); // לקריאת מידע מטפסי HTML
